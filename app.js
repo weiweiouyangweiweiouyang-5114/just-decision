@@ -378,7 +378,7 @@ function renderHistory() {
         '<article class="record-shell history-shell" data-record-id="' +
         record.id +
         '">' +
-        '<button class="restore-action" type="button" aria-label="复原这条记录">复原</button>' +
+        '<button class="history-restore" type="button" aria-label="复原这条记录">复原</button>' +
         '<div class="record-card history-record-card">' +
         "<div><strong>" +
         record.value +
@@ -394,6 +394,7 @@ function renderHistory() {
         escapeHtml(record.meaning || meanings[record.value]) +
         "</small>" +
         "</div>" +
+        '<button class="history-delete" type="button" aria-label="永久删除这条记录">删除</button>' +
         "</article>"
       );
     })
@@ -405,13 +406,17 @@ function renderHistory() {
 function bindHistoryGestures() {
   els.historyList.querySelectorAll(".history-shell").forEach(function (shell) {
     var card = shell.querySelector(".history-record-card");
-    var restoreButton = shell.querySelector(".restore-action");
+    var restoreBtn = shell.querySelector(".history-restore");
+    var deleteBtn = shell.querySelector(".history-delete");
     var startX = 0;
     var currentX = 0;
     var pointerId = null;
 
-    restoreButton.addEventListener("click", function () {
+    restoreBtn.addEventListener("click", function () {
       restoreRecord(shell.dataset.recordId);
+    });
+    deleteBtn.addEventListener("click", function () {
+      permanentDeleteRecord(shell.dataset.recordId);
     });
 
     card.addEventListener("pointerdown", function (event) {
@@ -424,14 +429,18 @@ function bindHistoryGestures() {
 
     card.addEventListener("pointermove", function (event) {
       if (pointerId !== event.pointerId) return;
-      currentX = Math.min(event.clientX - startX, 0);
-      card.style.transform = "translateX(" + Math.max(currentX, -96) + "px)";
+      currentX = event.clientX - startX;
+      card.style.transform = "translateX(" + Math.max(-96, Math.min(96, currentX)) + "px)";
     });
 
     card.addEventListener("pointerup", function (event) {
       if (pointerId !== event.pointerId) return;
       card.releasePointerCapture(pointerId);
       if (currentX < -92) {
+        permanentDeleteRecord(shell.dataset.recordId);
+        return;
+      }
+      if (currentX > 92) {
         restoreRecord(shell.dataset.recordId);
         return;
       }
@@ -467,6 +476,18 @@ function deleteRecord(recordId) {
     record.deleted = true;
     saveRecords();
     render();
+  }
+}
+
+function permanentDeleteRecord(recordId) {
+  records = records.filter(function (r) { return r.id !== recordId; });
+  saveRecords();
+
+  var shell = els.historyList.querySelector('.history-shell[data-record-id="' + recordId + '"]');
+  if (shell) shell.remove();
+  if (deletedRecords().length === 0) {
+    els.historyList.style.display = "none";
+    els.historyEmpty.style.display = "block";
   }
 }
 

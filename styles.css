@@ -522,12 +522,22 @@ textarea {
   font-size: 0.82rem;
 }
 
-.restore-action {
+.history-restore {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 86px;
+  border: 0;
+  background: var(--moss);
+  color: #fff;
+  font-weight: 900;
+}
+
+.history-delete {
   position: absolute;
   inset: 0 0 0 auto;
   width: 86px;
   border: 0;
-  background: var(--moss);
+  background: #b66f62;
   color: #fff;
   font-weight: 900;
 }
