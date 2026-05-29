@@ -38,6 +38,11 @@ const els = {
   closeHistoryButton: document.querySelector("#closeHistoryButton"),
   historyList: document.querySelector("#historyList"),
   historyEmpty: document.querySelector("#historyEmpty"),
+  dayModal: document.querySelector("#dayModal"),
+  closeDayButton: document.querySelector("#closeDayButton"),
+  dayModalList: document.querySelector("#dayModalList"),
+  dayModalTitle: document.querySelector("#dayModalTitle"),
+  dayModalEmpty: document.querySelector("#dayModalEmpty"),
   todayCount: document.querySelector("#todayCount"),
   todayList: document.querySelector("#todayList"),
   monthLabel: document.querySelector("#monthLabel"),
@@ -136,6 +141,47 @@ function openHistory() {
 function closeHistory() {
   els.historyModal.classList.remove("is-open");
   els.historyModal.setAttribute("aria-hidden", "true");
+}
+
+function openDayModal(dateStr) {
+  var dayRecords = activeRecords().filter(function (r) { return r.date === dateStr; });
+  els.dayModalTitle.textContent = dateStr;
+  if (dayRecords.length === 0) {
+    els.dayModalList.style.display = "none";
+    els.dayModalEmpty.style.display = "block";
+  } else {
+    els.dayModalList.style.display = "";
+    els.dayModalEmpty.style.display = "none";
+    els.dayModalList.innerHTML = dayRecords
+      .map(function (record) {
+        return (
+          '<article class="day-record-item">' +
+          "<div class='day-record-head'><strong>" +
+          record.value +
+          "</strong><span>" +
+          formatTime(record.createdAt) +
+          "</span></div>" +
+          "<p>" +
+          escapeHtml(record.question) +
+          "</p>" +
+          "<small>" +
+          escapeHtml(record.meaning || meanings[record.value]) +
+          "</small>" +
+          "<em>" +
+          escapeHtml(record.encouragement || "") +
+          "</em>" +
+          "</article>"
+        );
+      })
+      .join("");
+  }
+  els.dayModal.classList.add("is-open");
+  els.dayModal.setAttribute("aria-hidden", "false");
+}
+
+function closeDayModal() {
+  els.dayModal.classList.remove("is-open");
+  els.dayModal.setAttribute("aria-hidden", "true");
 }
 
 function renderMeaningFields() {
@@ -508,11 +554,22 @@ els.settingsModal.addEventListener("click", function (event) {
 els.historyModal.addEventListener("click", function (event) {
   if (event.target === els.historyModal) closeHistory();
 });
+els.calendarGrid.addEventListener("click", function (event) {
+  var day = event.target.closest(".calendar-day");
+  if (!day) return;
+  var title = day.getAttribute("title");
+  if (title) openDayModal(title.split("，")[0]);
+});
+els.closeDayButton.addEventListener("click", closeDayModal);
+els.dayModal.addEventListener("click", function (event) {
+  if (event.target === els.dayModal) closeDayModal();
+});
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closePrompt();
     closeSettings();
     closeHistory();
+    closeDayModal();
   }
   if ((event.metaKey || event.ctrlKey) && event.key === "Enter" && els.promptModal.classList.contains("is-open")) {
     rollDice();

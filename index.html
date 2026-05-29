@@ -44,6 +44,16 @@
         <div class="today-list" id="todayList"></div>
       </section>
 
+      <section class="heatmap-panel">
+        <div class="panel-header">
+          <h2>摇骰热力图</h2>
+          <span>最近 12 周</span>
+        </div>
+        <div class="heatmap-wrap">
+          <div class="heatmap" id="heatmap" aria-label="每天摇骰次数热力图"></div>
+        </div>
+      </section>
+
       <section class="calendar-panel">
         <div class="panel-header">
           <h2>结果日历</h2>
@@ -57,16 +67,6 @@
           <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
         </div>
         <div class="calendar-grid" id="calendarGrid" aria-label="按日期展示摇骰结果"></div>
-      </section>
-
-      <section class="heatmap-panel">
-        <div class="panel-header">
-          <h2>摇骰热力图</h2>
-          <span>最近 12 周</span>
-        </div>
-        <div class="heatmap-wrap">
-          <div class="heatmap" id="heatmap" aria-label="每天摇骰次数热力图"></div>
-        </div>
       </section>
 
       <section class="prompt-modal" id="promptModal" aria-hidden="true">
@@ -103,6 +103,17 @@
           <p class="history-hint">长按可复原已删除的记录</p>
           <div class="history-list" id="historyList"></div>
           <div class="history-empty" id="historyEmpty">没有已删除的记录</div>
+        </div>
+      </section>
+
+      <section class="prompt-modal" id="dayModal" aria-hidden="true">
+        <div class="prompt-card day-modal-card" role="dialog" aria-modal="true" aria-labelledby="dayModalTitle">
+          <div class="panel-header">
+            <h2 id="dayModalTitle"></h2>
+            <button class="icon-button" id="closeDayButton" type="button" aria-label="关闭">×</button>
+          </div>
+          <div class="day-modal-list" id="dayModalList"></div>
+          <div class="day-modal-empty" id="dayModalEmpty">这一天没有记录</div>
         </div>
       </section>
     </main>

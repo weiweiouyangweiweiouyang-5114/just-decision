@@ -319,6 +319,12 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fffdf9;
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.calendar-day:hover {
+  border-color: var(--clay);
 }
 
 .calendar-day.is-muted {
@@ -539,6 +545,77 @@ textarea {
 
 .history-record-card.is-dragging {
   transition: none;
+}
+
+.day-modal-card {
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.day-modal-list {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+  overflow: auto;
+  flex: 1;
+}
+
+.day-modal-empty {
+  margin-top: 16px;
+  padding: 36px 14px;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  display: none;
+}
+
+.day-record-item {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffdf9;
+}
+
+.day-record-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.day-record-head strong {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #f2ded5;
+  color: var(--clay);
+}
+
+.day-record-item p {
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.day-record-item small,
+.day-record-item em {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.day-record-item small {
+  color: var(--clay);
+  font-weight: 800;
+}
+
+.day-record-item em {
+  font-style: normal;
 }
 
 @media (max-width: 780px) {
