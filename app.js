@@ -472,11 +472,16 @@ function deleteRecord(recordId) {
 
 function restoreRecord(recordId) {
   var record = records.find(function (r) { return r.id === recordId; });
-  if (record) {
-    record.deleted = false;
-    saveRecords();
-    render();
-    if (els.historyModal.classList.contains("is-open")) renderHistory();
+  if (!record) return;
+  record.deleted = false;
+  saveRecords();
+  render();
+
+  var shell = els.historyList.querySelector('.history-shell[data-record-id="' + recordId + '"]');
+  if (shell) shell.remove();
+  if (deletedRecords().length === 0) {
+    els.historyList.style.display = "none";
+    els.historyEmpty.style.display = "block";
   }
 }
 
