@@ -315,7 +315,9 @@ h2 {
 
 .calendar-day {
   aspect-ratio: 1;
-  padding: 8px;
+  min-height: 0;
+  overflow: hidden;
+  padding: 6px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fffdf9;
