@@ -309,7 +309,7 @@ function renderCalendar() {
     if (day.getMonth() !== month) cssClass += " is-muted";
     if (key === selectedDate) cssClass += " is-selected";
     days.push(`
-      <div class="${cssClass}" title="${key}，${dayRecords.length} 次">
+      <div class="${cssClass}" title="${key}，${dayRecords.length} 次" data-date="${key}">
         <div class="calendar-date">${day.getDate()}</div>
         <div class="calendar-results">
           ${dayRecords.slice(0, 5).map((record) => `<span class="result-chip">${record.value}</span>`).join("")}
@@ -431,11 +431,11 @@ function bindHistoryGestures() {
     card.addEventListener("pointerup", function (event) {
       if (pointerId !== event.pointerId) return;
       card.releasePointerCapture(pointerId);
-      card.classList.remove("is-dragging");
       if (currentX < -92) {
         restoreRecord(shell.dataset.recordId);
         return;
       }
+      card.classList.remove("is-dragging");
       card.style.transform = "";
       pointerId = null;
     });
@@ -506,11 +506,11 @@ function bindRecordGestures() {
     card.addEventListener("pointerup", (event) => {
       if (pointerId !== event.pointerId) return;
       card.releasePointerCapture(pointerId);
-      card.classList.remove("is-dragging");
       if (currentX < -92) {
         deleteRecord(shell.dataset.recordId);
         return;
       }
+      card.classList.remove("is-dragging");
       card.style.transform = "";
       pointerId = null;
     });
@@ -557,8 +557,8 @@ els.historyModal.addEventListener("click", function (event) {
 els.calendarGrid.addEventListener("click", function (event) {
   var day = event.target.closest(".calendar-day");
   if (!day) return;
-  var title = day.getAttribute("title");
-  if (title) openDayModal(title.split("，")[0]);
+  var date = day.getAttribute("data-date");
+  if (date) openDayModal(date);
 });
 els.closeDayButton.addEventListener("click", closeDayModal);
 els.dayModal.addEventListener("click", function (event) {
