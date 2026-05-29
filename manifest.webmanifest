@@ -1,0 +1,17 @@
+{
+  "name": "纠结骰子",
+  "short_name": "纠结骰子",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8f1ea",
+  "theme_color": "#c98f7b",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

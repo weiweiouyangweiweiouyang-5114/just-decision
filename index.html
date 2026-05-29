@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#c98f7b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="纠结骰子" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>纠结骰子</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero-panel">
+        <div class="topbar">
+          <div>
+            <p class="eyebrow">给纠结一个出口</p>
+            <h1>纠结骰子</h1>
+          </div>
+          <button class="icon-button" id="settingsButton" type="button" title="设置点数含义" aria-label="设置点数含义">⚙</button>
+        </div>
+
+        <div class="dice-stage" aria-live="polite">
+          <div class="dice" id="dice" data-value="1">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <p id="decisionText">先写下你正在纠结什么，再摇一下。</p>
+          <p class="encouragement" id="encouragementText"></p>
+        </div>
+
+        <button class="roll-button" id="openPromptButton" type="button">摇骰子</button>
+      </section>
+
+      <section class="today-panel">
+        <div class="panel-header">
+          <h2>今天的纠结</h2>
+          <span id="todayCount">0 次</span>
+        </div>
+        <div class="today-list" id="todayList"></div>
+      </section>
+
+      <section class="calendar-panel">
+        <div class="panel-header">
+          <h2>结果日历</h2>
+          <div class="month-controls">
+            <button class="mini-button" id="prevMonthButton" type="button" aria-label="上个月">‹</button>
+            <strong id="monthLabel"></strong>
+            <button class="mini-button" id="nextMonthButton" type="button" aria-label="下个月">›</button>
+          </div>
+        </div>
+        <div class="weekday-row" aria-hidden="true">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+        </div>
+        <div class="calendar-grid" id="calendarGrid" aria-label="按日期展示摇骰结果"></div>
+      </section>
+
+      <section class="heatmap-panel">
+        <div class="panel-header">
+          <h2>摇骰热力图</h2>
+          <span>最近 12 周</span>
+        </div>
+        <div class="heatmap-wrap">
+          <div class="heatmap" id="heatmap" aria-label="每天摇骰次数热力图"></div>
+          <div class="heatmap-legend">
+            <span>少</span>
+            <i data-level="0"></i><i data-level="1"></i><i data-level="2"></i><i data-level="3"></i><i data-level="4"></i>
+            <span>多</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="prompt-modal" id="promptModal" aria-hidden="true">
+        <div class="prompt-card" role="dialog" aria-modal="true" aria-labelledby="promptTitle">
+          <div class="panel-header">
+            <h2 id="promptTitle">今日又纠结什么了</h2>
+            <button class="icon-button" id="closePromptButton" type="button" aria-label="关闭">×</button>
+          </div>
+          <label class="prompt-field">
+            <span>写下来，骰子才开工</span>
+            <textarea id="questionInput" rows="4" placeholder="比如：今晚要不要出门？这件衣服买不买？"></textarea>
+          </label>
+          <button class="roll-button" id="rollButton" type="button">写好了，开摇</button>
+        </div>
+      </section>
+
+      <section class="prompt-modal" id="settingsModal" aria-hidden="true">
+        <div class="prompt-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+          <div class="panel-header">
+            <h2 id="settingsTitle">每个点数代表什么</h2>
+            <button class="icon-button" id="closeSettingsButton" type="button" aria-label="关闭">×</button>
+          </div>
+          <div class="meaning-grid" id="meaningGrid"></div>
+          <button class="roll-button" id="saveSettingsButton" type="button">保存</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js");
+      }
+    </script>
+  </body>
+</html>
