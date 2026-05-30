@@ -782,16 +782,11 @@ textarea {
 
 @keyframes cubeTumble {
   0%   { transform: rotateX(15deg) rotateY(0deg) rotateZ(0deg); }
-  10%  { transform: rotateX(45deg) rotateY(360deg) rotateZ(90deg); }
-  20%  { transform: rotateX(75deg) rotateY(720deg) rotateZ(180deg); }
-  30%  { transform: rotateX(60deg) rotateY(1080deg) rotateZ(270deg); }
-  40%  { transform: rotateX(45deg) rotateY(1440deg) rotateZ(360deg); }
-  50%  { transform: rotateX(30deg) rotateY(1800deg) rotateZ(450deg); }
-  60%  { transform: rotateX(20deg) rotateY(2160deg) rotateZ(540deg); }
-  70%  { transform: rotateX(25deg) rotateY(2520deg) rotateZ(630deg); }
-  80%  { transform: rotateX(30deg) rotateY(2880deg) rotateZ(720deg); }
-  90%  { transform: rotateX(20deg) rotateY(3240deg) rotateZ(810deg); }
-  100% { transform: rotateX(15deg) rotateY(3600deg) rotateZ(900deg); }
+  20%  { transform: rotateX(45deg) rotateY(120deg) rotateZ(60deg); }
+  40%  { transform: rotateX(75deg) rotateY(240deg) rotateZ(120deg); }
+  60%  { transform: rotateX(30deg) rotateY(360deg) rotateZ(180deg); }
+  80%  { transform: rotateX(60deg) rotateY(480deg) rotateZ(240deg); }
+  100% { transform: rotateX(15deg) rotateY(720deg) rotateZ(360deg); }
 }
 
 @keyframes splashFall {
