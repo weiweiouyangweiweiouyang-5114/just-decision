@@ -1,0 +1,2 @@
+const supabaseUrl = "https://eqhzucjzuishmpmbpniv.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxaHp1Y2p6dWlzaG1wbWJwbml2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNTY3NjMsImV4cCI6MjA5NTczMjc2M30.4s82vBYJ_uisLIlYZR9J3RtGvzNTMpA90DER2lbqBAk";

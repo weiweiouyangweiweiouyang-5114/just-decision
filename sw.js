@@ -1,5 +1,5 @@
 const CACHE_NAME = "dice-decision-app-v5";
-const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./firebase-config.js", "./firebase.js", "./manifest.webmanifest", "./icon.svg"];
+const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./supabase-config.js", "./supabase.js", "./manifest.webmanifest", "./icon.svg"];
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();
