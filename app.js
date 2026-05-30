@@ -640,24 +640,21 @@ render();
       setTimeout(function () {
         titleWrap.classList.add("is-show");
 
-        cube.style.animation = "none";
-        cube.style.transition = "none";
+        cube.style.setProperty("animation", "none", "important");
+        cube.style.setProperty("transition", "none", "important");
 
-        var startTime = null;
-        var duration = 3000;
-        var totalY = 3600;
+        var count = 0;
+        var total = 120;
+        var degPerStep = 3600 / total;
 
-        function spin(ts) {
-          if (!startTime) startTime = ts;
-          var elapsed = ts - startTime;
-          var progress = Math.min(elapsed / duration, 1);
-          var deg = totalY * progress;
-          cube.style.transform = "rotateX(15deg) rotateY(" + deg + "deg) rotateZ(" + (progress * 360) + "deg)";
-          if (progress < 1) {
-            requestAnimationFrame(spin);
+        var timer = setInterval(function () {
+          var deg = degPerStep * (count + 1);
+          cube.style.setProperty("transform", "rotateX(15deg) rotateY(" + deg + "deg) rotateZ(" + (count * 3) + "deg)", "important");
+          count++;
+          if (count >= total) {
+            clearInterval(timer);
           }
-        }
-        requestAnimationFrame(spin);
+        }, 25);
       }, 1400);
 
       setTimeout(function () {
