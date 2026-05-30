@@ -20,6 +20,9 @@ const encouragements = [
 ];
 
 const els = {
+  userBadge: document.querySelector("#userBadge"),
+  userDot: document.querySelector("#userDot"),
+  userLabel: document.querySelector("#userLabel"),
   menuButton: document.querySelector("#menuButton"),
   accountPanel: document.querySelector("#accountPanel"),
   accountLoggedOut: document.querySelector("#accountLoggedOut"),
@@ -270,17 +273,18 @@ function closeAccountPanel() {
 
 function updateNicknameUI() {
   var nick = (currentUser && currentUser.user_metadata && currentUser.user_metadata.nickname) || "";
+  var email = currentUser ? currentUser.email : "";
   els.accountNickname.value = nick;
-  els.accountAvatar.textContent = nick ? nick.charAt(0).toUpperCase() : (currentUser ? currentUser.email.charAt(0).toUpperCase() : "?");
-  els.menuButton.textContent = nick ? nick.charAt(0).toUpperCase() : (currentUser ? currentUser.email.charAt(0).toUpperCase() : "●");
+  els.accountAvatar.textContent = nick ? nick.charAt(0).toUpperCase() : (email ? email.charAt(0).toUpperCase() : "?");
+
   if (currentUser) {
-    els.menuButton.style.color = "var(--moss)";
-    els.menuButton.style.fontWeight = "800";
-    els.menuButton.style.fontSize = "1rem";
+    els.userDot.classList.add("is-logged");
+    els.userLabel.classList.add("is-logged");
+    els.userLabel.textContent = nick || email.split("@")[0];
   } else {
-    els.menuButton.style.color = "";
-    els.menuButton.style.fontWeight = "";
-    els.menuButton.style.fontSize = "0.7rem";
+    els.userDot.classList.remove("is-logged");
+    els.userLabel.classList.remove("is-logged");
+    els.userLabel.textContent = "登录同步";
   }
 }
 
@@ -769,6 +773,7 @@ els.closeSettingsButton.addEventListener("click", closeSettings);
 els.closeHistoryButton.addEventListener("click", closeHistory);
 
 els.menuButton.addEventListener("click", function (e) { e.stopPropagation(); toggleAccountPanel(); });
+els.userBadge.addEventListener("click", function (e) { e.stopPropagation(); toggleAccountPanel(); });
 els.accountSignUp.addEventListener("click", accountSignUp);
 els.accountLogIn.addEventListener("click", accountLogIn);
 els.accountLogoutBtn.addEventListener("click", accountLogOut);
