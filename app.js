@@ -640,22 +640,19 @@ render();
       setTimeout(function () {
         titleWrap.classList.add("is-show");
 
+        cube.style.animation = "none";
+        cube.style.transition = "none";
+
         var startTime = null;
         var duration = 3000;
-        var startX = 15;
-        var startY = 0;
-        var startZ = 0;
         var totalY = 3600;
 
         function spin(ts) {
           if (!startTime) startTime = ts;
           var elapsed = ts - startTime;
           var progress = Math.min(elapsed / duration, 1);
-          var y = startY + totalY * progress;
-          var x = startX + 40 * Math.sin(progress * Math.PI * 3);
-          var z = startZ + progress * 450;
-          cube.style.animation = "none";
-          cube.style.transform = "rotateX(" + x + "deg) rotateY(" + y + "deg) rotateZ(" + z + "deg)";
+          var deg = totalY * progress;
+          cube.style.transform = "rotateX(15deg) rotateY(" + deg + "deg) rotateZ(" + (progress * 360) + "deg)";
           if (progress < 1) {
             requestAnimationFrame(spin);
           }
