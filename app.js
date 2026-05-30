@@ -641,11 +641,11 @@ render();
         titleWrap.classList.add("is-show");
 
         var startTime = null;
-        var duration = 6000;
+        var duration = 3000;
         var startX = 15;
         var startY = 0;
         var startZ = 0;
-        var totalY = 7200;
+        var totalY = 3600;
 
         function spin(ts) {
           if (!startTime) startTime = ts;
@@ -653,7 +653,7 @@ render();
           var progress = Math.min(elapsed / duration, 1);
           var y = startY + totalY * progress;
           var x = startX + 40 * Math.sin(progress * Math.PI * 3);
-          var z = startZ + progress * 900;
+          var z = startZ + progress * 450;
           cube.style.animation = "none";
           cube.style.transform = "rotateX(" + x + "deg) rotateY(" + y + "deg) rotateZ(" + z + "deg)";
           if (progress < 1) {
@@ -665,11 +665,11 @@ render();
 
       setTimeout(function () {
         splash.classList.add("is-done");
-      }, 7600);
+      }, 4600);
 
       setTimeout(function () {
         splash.remove();
-      }, 8200);
+      }, 5200);
     });
   });
 })();
