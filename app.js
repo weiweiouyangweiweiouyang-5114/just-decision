@@ -214,37 +214,49 @@ function saveMeaningFields() {
 }
 
 function rollDice() {
-  const question = els.questionInput.value.trim();
+  var question = els.questionInput.value.trim();
   if (!question) {
     els.questionInput.focus();
     return;
   }
 
-  const value = Math.floor(Math.random() * 6) + 1;
-  const createdAt = new Date().toISOString();
-  const meaning = meanings[value];
-  const encouragement = randomEncouragement();
+  var value = Math.floor(Math.random() * 6) + 1;
+  var createdAt = new Date().toISOString();
+  var meaning = meanings[value];
+  var encouragement = randomEncouragement();
+
+  closePrompt();
+  els.decisionText.textContent = "";
+  els.encouragementText.textContent = "";
 
   els.dice.classList.add("is-rolling");
-  setTimeout(() => els.dice.classList.remove("is-rolling"), 280);
-  els.dice.dataset.value = value;
-  els.decisionText.textContent = `${value} 点：${meaning}`;
-  els.encouragementText.textContent = encouragement;
+  els.dice.dataset.value = Math.floor(Math.random() * 6) + 1;
 
-  records.unshift({
-    id: crypto.randomUUID(),
-    question,
-    value,
-    meaning,
-    encouragement,
-    createdAt,
-    date: dateKey(new Date()),
-    deleted: false,
-  });
+  var tick = setInterval(function () {
+    els.dice.dataset.value = Math.floor(Math.random() * 6) + 1;
+  }, 120);
 
-  saveRecords();
-  closePrompt();
-  render();
+  setTimeout(function () {
+    clearInterval(tick);
+    els.dice.classList.remove("is-rolling");
+    els.dice.dataset.value = value;
+    els.decisionText.textContent = value + " 点：" + meaning;
+    els.encouragementText.textContent = encouragement;
+
+    records.unshift({
+      id: crypto.randomUUID(),
+      question: question,
+      value: value,
+      meaning: meaning,
+      encouragement: encouragement,
+      createdAt: createdAt,
+      date: dateKey(new Date()),
+      deleted: false,
+    });
+
+    saveRecords();
+    render();
+  }, 1500);
 }
 
 function randomEncouragement() {
@@ -614,24 +626,20 @@ render();
 (function () {
   var splash = document.getElementById("splash");
   if (!splash) return;
-  var dice = splash.querySelector(".splash-dice");
-  var title = splash.querySelector(".splash-title");
+  var stage = splash.querySelector(".splash-stage");
 
   requestAnimationFrame(function () {
     requestAnimationFrame(function () {
-      dice.classList.add("is-fall");
+      stage.classList.add("is-fall");
       setTimeout(function () {
-        dice.classList.add("is-settle");
-      }, 900);
-      setTimeout(function () {
-        title.classList.add("is-show");
-      }, 1200);
+        stage.classList.add("is-settle");
+      }, 850);
       setTimeout(function () {
         splash.classList.add("is-done");
-      }, 2200);
+      }, 1600);
       setTimeout(function () {
         splash.remove();
-      }, 2700);
+      }, 2100);
     });
   });
 })();

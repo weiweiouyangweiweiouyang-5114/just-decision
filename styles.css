@@ -151,7 +151,15 @@ h2 {
 }
 
 .dice.is-rolling {
-  transform: rotate(18deg) scale(1.04);
+  animation: diceSpin 150ms linear infinite;
+}
+
+@keyframes diceSpin {
+  0%   { transform: rotate(-4deg) scale(1); }
+  25%  { transform: rotate(4deg) scale(1.06); }
+  50%  { transform: rotate(-4deg) scale(1); }
+  75%  { transform: rotate(4deg) scale(0.96); }
+  100% { transform: rotate(-4deg) scale(1); }
 }
 
 .dice span {
@@ -688,13 +696,12 @@ textarea {
   inset: 0;
   z-index: 100;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 48px;
   background:
     linear-gradient(135deg, rgba(201, 143, 123, 0.16), transparent 36rem),
     linear-gradient(180deg, #f8f1ea 0%, #f4eee6 100%);
+  perspective: 600px;
   transition: opacity 400ms ease;
 }
 
@@ -703,31 +710,48 @@ textarea {
   pointer-events: none;
 }
 
-.splash-dice {
+.splash-stage {
+  transform: translateY(-120vh);
+  opacity: 0;
+}
+
+.splash-stage.is-fall {
+  animation: splashFall 800ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.splash-stage.is-settle {
+  animation: splashSettle 500ms ease forwards;
+}
+
+.splash-cube {
+  width: 120px;
+  height: 120px;
+  transform-style: preserve-3d;
+  transform: rotateX(-25deg) rotateY(-35deg);
+  animation: cubeTumble 2s ease-out infinite;
+}
+
+.splash-stage.is-settle .splash-cube {
+  animation: cubeStop 400ms ease-out forwards;
+}
+
+.cube-face {
+  position: absolute;
   width: 120px;
   height: 120px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 10px;
-  padding: 20px;
-  border-radius: 24px;
+  gap: 6px;
+  padding: 16px;
+  border-radius: 18px;
   background: linear-gradient(145deg, #fffdf8, #ead6c8);
-  border: 1px solid #dec8bb;
-  box-shadow: 0 18px 34px rgba(101, 76, 63, 0.16);
-  transform: translateY(-120vh) rotate(0deg);
-  opacity: 0;
+  border: 2px solid #d4bfb0;
+  box-shadow: inset 0 0 20px rgba(99, 65, 48, 0.06);
+  backface-visibility: visible;
 }
 
-.splash-dice.is-fall {
-  animation: diceFall 700ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-}
-
-.splash-dice.is-settle {
-  animation: diceSettle 600ms ease forwards;
-}
-
-.splash-dice span {
+.cube-face span {
   width: 18px;
   height: 18px;
   align-self: center;
@@ -735,65 +759,61 @@ textarea {
   border-radius: 999px;
   background: var(--clay);
   opacity: 0;
+  box-shadow: inset 0 2px 3px rgba(0,0,0,0.15);
 }
 
-.splash-dice span:nth-child(1),
-.splash-dice span:nth-child(3),
-.splash-dice span:nth-child(7),
-.splash-dice span:nth-child(9) {
-  opacity: 1;
-}
+.face-1 { transform: translateZ(60px); }
+.face-2 { transform: rotateY(180deg) translateZ(60px); }
+.face-3 { transform: rotateY(90deg) translateZ(60px); }
+.face-4 { transform: rotateY(-90deg) translateZ(60px); }
+.face-5 { transform: rotateX(-90deg) translateZ(60px); }
+.face-6 { transform: rotateX(90deg) translateZ(60px); }
 
-.splash-title {
-  font-size: clamp(1.5rem, 3.5vw, 2.6rem);
-  font-style: italic;
-  font-weight: 900;
-  color: var(--ink);
-  opacity: 0;
-  transform: scale(0.3) translateY(20px);
-}
+/* Dot patterns for each face */
+.face-1 span:nth-child(5) { opacity: 1; }
+.face-2 span:nth-child(3), .face-2 span:nth-child(7) { opacity: 1; }
+.face-3 span:nth-child(3), .face-3 span:nth-child(5), .face-3 span:nth-child(7) { opacity: 1; }
+.face-4 span:nth-child(1), .face-4 span:nth-child(3), .face-4 span:nth-child(7), .face-4 span:nth-child(9) { opacity: 1; }
+.face-5 span:nth-child(1), .face-5 span:nth-child(3), .face-5 span:nth-child(5), .face-5 span:nth-child(7), .face-5 span:nth-child(9) { opacity: 1; }
+.face-6 span:nth-child(1), .face-6 span:nth-child(3), .face-6 span:nth-child(4), .face-6 span:nth-child(6), .face-6 span:nth-child(7), .face-6 span:nth-child(9) { opacity: 1; }
 
-.splash-title.is-show {
-  animation: titleReveal 500ms ease forwards;
-}
-
-@keyframes diceFall {
+@keyframes splashFall {
   0% {
-    transform: translateY(-120vh) rotate(0deg);
+    transform: translateY(-120vh);
     opacity: 0;
   }
-  15% {
+  10% {
     opacity: 1;
   }
   100% {
-    transform: translateY(0) rotate(720deg);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
-@keyframes diceSettle {
+@keyframes splashSettle {
   0% {
-    transform: translateY(0) rotate(720deg) scale(1);
+    transform: translateY(0) scale(1);
   }
   40% {
-    transform: translateY(-12px) rotate(710deg) scale(1.05);
+    transform: translateY(-8px) scale(1.04);
   }
   100% {
-    transform: translateY(0) rotate(705deg) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes titleReveal {
-  0% {
-    opacity: 0;
-    transform: scale(0.3) translateY(20px);
-  }
-  70% {
-    transform: scale(1.08) translateY(0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
+@keyframes cubeTumble {
+  0%   { transform: rotateX(-25deg) rotateY(-35deg) rotateZ(0deg); }
+  25%  { transform: rotateX(-45deg) rotateY(-55deg) rotateZ(90deg); }
+  50%  { transform: rotateX(-35deg) rotateY(-20deg) rotateZ(180deg); }
+  75%  { transform: rotateX(-15deg) rotateY(-50deg) rotateZ(270deg); }
+  100% { transform: rotateX(-25deg) rotateY(-35deg) rotateZ(360deg); }
+}
+
+@keyframes cubeStop {
+  to {
+    transform: rotateX(-25deg) rotateY(-35deg) rotateZ(0deg);
   }
 }
 
