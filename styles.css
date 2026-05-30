@@ -729,7 +729,7 @@ textarea {
 }
 
 .splash .dice-cube {
-  animation: cubeTumble 3s linear infinite;
+  animation: cubeTumble 5s linear infinite;
 }
 
 .splash-title-wrap {
