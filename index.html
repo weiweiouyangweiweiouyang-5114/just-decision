@@ -42,13 +42,33 @@
             <p class="eyebrow">给纠结一个出口</p>
             <h1>JUST DECISION!</h1>
           </div>
-          <button class="icon-button" id="authButton" type="button" title="登录同步" aria-label="登录同步">&#9998;</button>
-          <button class="icon-button" id="historyButton" type="button" title="历史记录" aria-label="历史记录">&#8634;</button>
-          <button class="icon-button" id="settingsButton" type="button" title="设置点数含义" aria-label="设置点数含义">⚙</button>
-        </div>
-        <div class="auth-user" id="authUser" style="display:none">
-          <span id="authUserEmail"></span>
-          <button id="authLogoutButton" type="button">退出</button>
+          <div class="topbar-actions">
+            <button class="icon-button" id="menuButton" type="button" title="账号" aria-label="账号">&#9679;</button>
+            <div class="account-panel" id="accountPanel">
+              <div class="account-panel-inner">
+                <div class="account-state" id="accountLoggedOut">
+                  <p class="account-hint">登录后数据同步到云端</p>
+                  <input type="email" id="accountEmail" placeholder="邮箱" autocomplete="email" />
+                  <input type="password" id="accountPassword" placeholder="密码（至少6位）" autocomplete="current-password" minlength="6" />
+                  <p class="account-error" id="accountError"></p>
+                  <div class="account-buttons">
+                    <button class="mini-roll" id="accountSignUp" type="button">注册</button>
+                    <button class="mini-roll secondary" id="accountLogIn" type="button">登录</button>
+                  </div>
+                </div>
+                <div class="account-state" id="accountLoggedIn" style="display:none">
+                  <div class="account-avatar" id="accountAvatar"></div>
+                  <input type="text" class="account-nickname" id="accountNickname" placeholder="设置昵称" maxlength="20" />
+                  <p class="account-email" id="accountEmailDisplay"></p>
+                  <hr />
+                  <button class="account-link" id="accountHistoryBtn">历史记录</button>
+                  <button class="account-link" id="accountSettingsBtn">骰子设置</button>
+                  <hr />
+                  <button class="account-link danger" id="accountLogoutBtn">退出登录</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="dice-stage" aria-live="polite">
@@ -127,30 +147,6 @@
           </div>
           <div class="meaning-grid" id="meaningGrid"></div>
           <button class="roll-button" id="saveSettingsButton" type="button">保存</button>
-        </div>
-      </section>
-
-      <section class="prompt-modal" id="authModal" aria-hidden="true">
-        <div class="prompt-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-          <div class="panel-header">
-            <h2 id="authTitle">注册 / 登录</h2>
-            <button class="icon-button" id="closeAuthButton" type="button" aria-label="关闭">×</button>
-          </div>
-          <div class="auth-form">
-            <label class="prompt-field">
-              <span>邮箱</span>
-              <input type="email" id="authEmail" placeholder="your@email.com" autocomplete="email" />
-            </label>
-            <label class="prompt-field">
-              <span>密码（至少6位）</span>
-              <input type="password" id="authPassword" placeholder="······" autocomplete="current-password" minlength="6" />
-            </label>
-            <div class="auth-buttons">
-              <button class="roll-button" id="signUpButton" type="button">注册</button>
-              <button class="roll-button auth-secondary" id="logInButton" type="button">登录</button>
-            </div>
-            <p class="auth-error" id="authError"></p>
-          </div>
         </div>
       </section>
 

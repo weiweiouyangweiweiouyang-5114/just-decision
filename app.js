@@ -20,8 +20,21 @@ const encouragements = [
 ];
 
 const els = {
-  settingsButton: document.querySelector("#settingsButton"),
-  historyButton: document.querySelector("#historyButton"),
+  menuButton: document.querySelector("#menuButton"),
+  accountPanel: document.querySelector("#accountPanel"),
+  accountLoggedOut: document.querySelector("#accountLoggedOut"),
+  accountLoggedIn: document.querySelector("#accountLoggedIn"),
+  accountEmail: document.querySelector("#accountEmail"),
+  accountPassword: document.querySelector("#accountPassword"),
+  accountError: document.querySelector("#accountError"),
+  accountSignUp: document.querySelector("#accountSignUp"),
+  accountLogIn: document.querySelector("#accountLogIn"),
+  accountAvatar: document.querySelector("#accountAvatar"),
+  accountNickname: document.querySelector("#accountNickname"),
+  accountEmailDisplay: document.querySelector("#accountEmailDisplay"),
+  accountHistoryBtn: document.querySelector("#accountHistoryBtn"),
+  accountSettingsBtn: document.querySelector("#accountSettingsBtn"),
+  accountLogoutBtn: document.querySelector("#accountLogoutBtn"),
   dice: document.querySelector("#dice"),
   decisionText: document.querySelector("#decisionText"),
   encouragementText: document.querySelector("#encouragementText"),
@@ -51,14 +64,6 @@ const els = {
   calendarGrid: document.querySelector("#calendarGrid"),
   heatmap: document.querySelector("#heatmap"),
   heatmapMonths: document.querySelector("#heatmapMonths"),
-  authButton: document.querySelector("#authButton"),
-  authModal: document.querySelector("#authModal"),
-  closeAuthButton: document.querySelector("#closeAuthButton"),
-  authEmail: document.querySelector("#authEmail"),
-  authPassword: document.querySelector("#authPassword"),
-  authError: document.querySelector("#authError"),
-  signUpButton: document.querySelector("#signUpButton"),
-  logInButton: document.querySelector("#logInButton"),
 };
 
 let records = loadRecords();
@@ -198,69 +203,92 @@ function closeDayModal() {
   els.dayModal.setAttribute("aria-hidden", "true");
 }
 
-function openAuth() {
-  els.authModal.classList.add("is-open");
-  els.authModal.setAttribute("aria-hidden", "false");
-  els.authError.textContent = "";
-  els.authEmail.focus();
+function toggleAccountPanel() {
+  var panel = els.accountPanel;
+  panel.style.display = panel.style.display === "block" ? "none" : "block";
+  if (panel.style.display === "block") {
+    els.accountError.textContent = "";
+    if (currentUser) {
+      els.accountLoggedOut.style.display = "none";
+      els.accountLoggedIn.style.display = "block";
+      els.accountEmailDisplay.textContent = currentUser.email;
+      updateNicknameUI();
+    } else {
+      els.accountLoggedOut.style.display = "block";
+      els.accountLoggedIn.style.display = "none";
+      els.accountEmail.focus();
+    }
+  }
 }
 
-function closeAuth() {
-  els.authModal.classList.remove("is-open");
-  els.authModal.setAttribute("aria-hidden", "true");
-}
-
-function handleAuthError(e) {
+function handleAccountError(e) {
   var msg = e.message || "出错了";
-  if (msg.indexOf("invalid-email") !== -1) msg = "邮箱格式不对";
-  else if (msg.indexOf("weak-password") !== -1) msg = "密码至少需要6位";
-  else if (msg.indexOf("email-already-in-use") !== -1) msg = "这个邮箱已经注册了";
-  else if (msg.indexOf("user-not-found") !== -1 || msg.indexOf("wrong-password") !== -1) msg = "邮箱或密码不对";
-  else if (msg.indexOf("too-many-requests") !== -1) msg = "尝试太多次了，稍后再试";
-  els.authError.textContent = msg;
+  if (msg.indexOf("invalid") !== -1) msg = "邮箱格式不对";
+  else if (msg.indexOf("password") !== -1) msg = "密码至少需要6位";
+  else if (msg.indexOf("already") !== -1) msg = "这个邮箱已经注册了";
+  else if (msg.indexOf("Invalid") !== -1) msg = "邮箱或密码不对";
+  else if (msg.indexOf("rate") !== -1) msg = "尝试太多次了，稍后再试";
+  els.accountError.textContent = msg;
 }
 
-function doSignUp() {
-  var email = els.authEmail.value.trim();
-  var password = els.authPassword.value;
-  if (!email || !password) { els.authError.textContent = "请填写邮箱和密码"; return; }
-  signUp(email, password).then(function () {
-    closeAuth();
-  }).catch(handleAuthError);
+function accountSignUp() {
+  var email = els.accountEmail.value.trim();
+  var pw = els.accountPassword.value;
+  if (!email || !pw) { els.accountError.textContent = "请填写邮箱和密码"; return; }
+  if (pw.length < 6) { els.accountError.textContent = "密码至少需要6位"; return; }
+  signUp(email, pw).then(function (res) {
+    if (res.data.user) {
+      els.accountPassword.value = "";
+      els.accountError.textContent = "";
+      closeAccountPanel();
+    }
+  }).catch(handleAccountError);
 }
 
-function doLogIn() {
-  var email = els.authEmail.value.trim();
-  var password = els.authPassword.value;
-  if (!email || !password) { els.authError.textContent = "请填写邮箱和密码"; return; }
-  logIn(email, password).then(function () {
-    closeAuth();
-  }).catch(handleAuthError);
+function accountLogIn() {
+  var email = els.accountEmail.value.trim();
+  var pw = els.accountPassword.value;
+  if (!email || !pw) { els.accountError.textContent = "请填写邮箱和密码"; return; }
+  logIn(email, pw).then(function () {
+    els.accountPassword.value = "";
+    closeAccountPanel();
+  }).catch(handleAccountError);
 }
 
-function doLogOut() {
+function accountLogOut() {
   logOut().then(function () {
     loadLocalRecords();
     render();
+    closeAccountPanel();
   });
 }
 
-function updateUserUI(user) {
-  var statusEl = document.getElementById("authUser");
-  var emailEl = document.getElementById("authUserEmail");
-  var logoutBtn = document.getElementById("authLogoutButton");
-  if (user) {
-    els.authButton.textContent = "✓";
-    els.authButton.title = "已登录 - 点击退出";
-    els.authButton.style.color = "var(--moss)";
-    if (statusEl) { statusEl.style.display = "flex"; emailEl.textContent = user.email; }
-    if (logoutBtn) logoutBtn.onclick = doLogOut;
+function closeAccountPanel() {
+  els.accountPanel.style.display = "none";
+}
+
+function updateNicknameUI() {
+  var nick = (currentUser && currentUser.user_metadata && currentUser.user_metadata.nickname) || "";
+  els.accountNickname.value = nick;
+  els.accountAvatar.textContent = nick ? nick.charAt(0).toUpperCase() : (currentUser ? currentUser.email.charAt(0).toUpperCase() : "?");
+  els.menuButton.textContent = nick ? nick.charAt(0).toUpperCase() : (currentUser ? currentUser.email.charAt(0).toUpperCase() : "●");
+  if (currentUser) {
+    els.menuButton.style.color = "var(--moss)";
+    els.menuButton.style.fontWeight = "800";
+    els.menuButton.style.fontSize = "1rem";
   } else {
-    els.authButton.textContent = "✎";
-    els.authButton.title = "登录同步数据";
-    els.authButton.style.color = "";
-    if (statusEl) statusEl.style.display = "none";
+    els.menuButton.style.color = "";
+    els.menuButton.style.fontWeight = "";
+    els.menuButton.style.fontSize = "0.7rem";
   }
+}
+
+function saveNickname() {
+  var nick = els.accountNickname.value.trim();
+  if (!currentUser) return;
+  sb.auth.updateUser({ data: { nickname: nick } }).then(function () {
+    updateNicknameUI();
+  });
 }
 
 function loadLocalRecords() {
@@ -275,7 +303,7 @@ function loadLocalRecords() {
 }
 
 onUserChange = function (user) {
-  updateUserUI(user);
+  updateNicknameUI();
   if (user) {
     loadFromCloud().then(function (cloudRecords) {
       if (cloudRecords && cloudRecords.length > 0) {
@@ -735,11 +763,24 @@ function render() {
 }
 
 els.dice.addEventListener("click", openPrompt);
-els.settingsButton.addEventListener("click", openSettings);
-els.historyButton.addEventListener("click", openHistory);
 els.closePromptButton.addEventListener("click", closePrompt);
 els.closeSettingsButton.addEventListener("click", closeSettings);
 els.closeHistoryButton.addEventListener("click", closeHistory);
+
+els.menuButton.addEventListener("click", function (e) { e.stopPropagation(); toggleAccountPanel(); });
+els.accountSignUp.addEventListener("click", accountSignUp);
+els.accountLogIn.addEventListener("click", accountLogIn);
+els.accountLogoutBtn.addEventListener("click", accountLogOut);
+els.accountHistoryBtn.addEventListener("click", function () { closeAccountPanel(); openHistory(); });
+els.accountSettingsBtn.addEventListener("click", function () { closeAccountPanel(); openSettings(); });
+els.accountNickname.addEventListener("blur", saveNickname);
+els.accountNickname.addEventListener("keydown", function (e) { if (e.key === "Enter") { saveNickname(); els.accountNickname.blur(); } });
+
+document.addEventListener("click", function (e) {
+  if (!els.accountPanel.contains(e.target) && e.target !== els.menuButton) {
+    closeAccountPanel();
+  }
+});
 els.rollButton.addEventListener("click", rollDice);
 els.saveSettingsButton.addEventListener("click", saveMeaningFields);
 els.prevMonthButton.addEventListener("click", () => {
@@ -769,27 +810,13 @@ els.closeDayButton.addEventListener("click", closeDayModal);
 els.dayModal.addEventListener("click", function (event) {
   if (event.target === els.dayModal) closeDayModal();
 });
-els.authButton.addEventListener("click", function () {
-  if (currentUser) { doLogOut(); } else { openAuth(); }
-});
-els.closeAuthButton.addEventListener("click", closeAuth);
-els.authModal.addEventListener("click", function (event) {
-  if (event.target === els.authModal) closeAuth();
-});
-els.signUpButton.addEventListener("click", doSignUp);
-els.logInButton.addEventListener("click", doLogIn);
 document.addEventListener("keydown", function (event) {
-  if (event.key === "Enter" && els.authModal.classList.contains("is-open")) {
-    if (event.shiftKey) { doLogIn(); } else { doSignUp(); }
-  }
-});
-document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closePrompt();
     closeSettings();
     closeHistory();
     closeDayModal();
-    closeAuth();
+    closeAccountPanel();
   }
   if ((event.metaKey || event.ctrlKey) && event.key === "Enter" && els.promptModal.classList.contains("is-open")) {
     rollDice();
