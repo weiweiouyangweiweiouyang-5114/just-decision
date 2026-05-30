@@ -23,7 +23,6 @@ const els = {
   userBadge: document.querySelector("#userBadge"),
   userDot: document.querySelector("#userDot"),
   userLabel: document.querySelector("#userLabel"),
-  menuButton: document.querySelector("#menuButton"),
   accountPanel: document.querySelector("#accountPanel"),
   accountLoggedOut: document.querySelector("#accountLoggedOut"),
   accountLoggedIn: document.querySelector("#accountLoggedIn"),
@@ -772,7 +771,6 @@ els.closePromptButton.addEventListener("click", closePrompt);
 els.closeSettingsButton.addEventListener("click", closeSettings);
 els.closeHistoryButton.addEventListener("click", closeHistory);
 
-els.menuButton.addEventListener("click", function (e) { e.stopPropagation(); toggleAccountPanel(); });
 els.userBadge.addEventListener("click", function (e) { e.stopPropagation(); toggleAccountPanel(); });
 els.accountSignUp.addEventListener("click", accountSignUp);
 els.accountLogIn.addEventListener("click", accountLogIn);
@@ -783,7 +781,7 @@ els.accountNickname.addEventListener("blur", saveNickname);
 els.accountNickname.addEventListener("keydown", function (e) { if (e.key === "Enter") { saveNickname(); els.accountNickname.blur(); } });
 
 document.addEventListener("click", function (e) {
-  if (!els.accountPanel.contains(e.target) && e.target !== els.menuButton) {
+  if (!els.accountPanel.contains(e.target) && e.target !== els.userBadge && !els.userBadge.contains(e.target)) {
     closeAccountPanel();
   }
 });
