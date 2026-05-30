@@ -638,8 +638,29 @@ render();
       }, 850);
 
       setTimeout(function () {
-        cube.classList.add("is-spin");
         titleWrap.classList.add("is-show");
+
+        var startTime = null;
+        var duration = 6000;
+        var startX = 15;
+        var startY = 0;
+        var startZ = 0;
+        var totalY = 7200;
+
+        function spin(ts) {
+          if (!startTime) startTime = ts;
+          var elapsed = ts - startTime;
+          var progress = Math.min(elapsed / duration, 1);
+          var y = startY + totalY * progress;
+          var x = startX + 40 * Math.sin(progress * Math.PI * 3);
+          var z = startZ + progress * 900;
+          cube.style.animation = "none";
+          cube.style.transform = "rotateX(" + x + "deg) rotateY(" + y + "deg) rotateZ(" + z + "deg)";
+          if (progress < 1) {
+            requestAnimationFrame(spin);
+          }
+        }
+        requestAnimationFrame(spin);
       }, 1400);
 
       setTimeout(function () {

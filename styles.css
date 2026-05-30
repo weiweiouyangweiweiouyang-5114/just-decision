@@ -732,10 +732,6 @@ textarea {
   animation: cubeTumble 3s linear infinite;
 }
 
-.splash .dice-cube.is-spin {
-  animation: splashSpin 6s linear forwards !important;
-}
-
 .splash-title-wrap {
   grid-area: 1 / 1;
   z-index: 1;
@@ -820,20 +816,6 @@ textarea {
   100% {
     transform: translateY(0) scale(1);
   }
-}
-
-@keyframes splashSpin {
-  0%   { transform: rotateX(15deg) rotateY(0deg) rotateZ(0deg); }
-  10%  { transform: rotateX(45deg) rotateY(720deg) rotateZ(90deg); }
-  20%  { transform: rotateX(75deg) rotateY(1440deg) rotateZ(180deg); }
-  30%  { transform: rotateX(105deg) rotateY(2160deg) rotateZ(270deg); }
-  40%  { transform: rotateX(135deg) rotateY(2880deg) rotateZ(360deg); }
-  50%  { transform: rotateX(165deg) rotateY(3600deg) rotateZ(450deg); }
-  60%  { transform: rotateX(195deg) rotateY(4320deg) rotateZ(540deg); }
-  70%  { transform: rotateX(225deg) rotateY(5040deg) rotateZ(630deg); }
-  80%  { transform: rotateX(255deg) rotateY(5760deg) rotateZ(720deg); }
-  90%  { transform: rotateX(30deg) rotateY(6480deg) rotateZ(810deg); }
-  100% { transform: rotateX(15deg) rotateY(7200deg) rotateZ(900deg); }
 }
 
 @keyframes titleGrow {
