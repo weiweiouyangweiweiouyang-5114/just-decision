@@ -274,7 +274,6 @@ function loadLocalRecords() {
   } catch (e) { records = []; }
 }
 
-initFirebase();
 onUserChange = function (user) {
   updateUserUI(user);
   if (user) {

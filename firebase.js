@@ -1,19 +1,23 @@
 var db = null;
 var currentUser = null;
 var onUserChange = null;
+var firebaseReady = false;
 
-function initFirebase() {
+(function () {
   try {
     firebase.initializeApp(firebaseConfig);
     db = firebase.firestore();
+    db.settings({ merge: true });
     firebase.auth().onAuthStateChanged(function (user) {
       currentUser = user;
+      firebaseReady = true;
       if (onUserChange) onUserChange(user);
     });
+    console.log("Firebase initialized OK");
   } catch (e) {
-    console.warn("Firebase init failed, using local storage", e);
+    console.error("Firebase init error:", e.message);
   }
-}
+})();
 
 function signUp(email, password) {
   return firebase.auth().createUserWithEmailAndPassword(email, password);
