@@ -1,12 +1,12 @@
 const STORAGE_KEY = "dice-decision-records-v1";
 const SETTINGS_KEY = "dice-decision-meanings-v1";
 const defaultMeanings = {
-  1: "选最简单的那个",
-  2: "给自己两个选项",
-  3: "听身体更轻的答案",
-  4: "选长期更舒服的",
-  5: "大胆一点",
-  6: "就这样定",
+  1: "选第一个",
+  2: "选第二个",
+  3: "选长的",
+  4: "选短的",
+  5: "选时间成本短的",
+  6: "选便宜的",
 };
 const encouragements = [
   "你已经把纠结从脑子里拿出来了，这一步很厉害。",
