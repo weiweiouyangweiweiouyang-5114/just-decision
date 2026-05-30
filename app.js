@@ -642,11 +642,11 @@ render();
 
       setTimeout(function () {
         splash.classList.add("is-done");
-      }, 4600);
+      }, 6400);
 
       setTimeout(function () {
         splash.remove();
-      }, 5200);
+      }, 7000);
     });
   });
 })();
