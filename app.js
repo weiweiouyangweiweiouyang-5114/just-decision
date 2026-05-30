@@ -379,8 +379,7 @@ function renderHeatmap() {
   var labels = "";
   var col = 0;
   for (var j = 0; j < months.length; j++) {
-    var pct = (col / 12) * 100;
-    labels += '<span style="position:absolute;left:' + pct + '%">' + months[j].name + '</span>';
+    labels += '<span style="position:absolute;left:' + (col * 18) + 'px">' + months[j].name + '</span>';
     col += months[j].span;
   }
   els.heatmapMonths.innerHTML = labels;
