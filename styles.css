@@ -784,7 +784,6 @@ textarea {
 }
 
 #historyModal .prompt-card {
-  width: min(600px, 95vw);
   max-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -850,6 +849,7 @@ textarea {
   touch-action: pan-y;
   transition: transform 180ms ease;
   z-index: 1;
+  flex-shrink: 0;
 }
 
 .history-record-card.is-dragging {
@@ -857,7 +857,6 @@ textarea {
 }
 
 #dayModal .prompt-card {
-  width: min(600px, 95vw);
   max-height: 70vh;
   display: flex;
   flex-direction: column;
@@ -891,6 +890,7 @@ textarea {
   transition: transform 180ms ease;
   z-index: 1;
   position: relative;
+  flex-shrink: 0;
 }
 
 .day-record-card.is-dragging {
