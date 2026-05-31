@@ -170,7 +170,9 @@ function openDayModal(dateStr) {
     els.dayModalList.innerHTML = dayRecords
       .map(function (record) {
         return (
-          '<article class="day-record-item">' +
+          '<article class="record-shell day-shell" data-record-id="' + record.id + '">' +
+          '<button class="delete-action" type="button" aria-label="删除">删除</button>' +
+          '<div class="record-card day-record-card">' +
           "<div class='day-record-head'>" +
           miniDiceHtml(record.value) +
           "<div><span>" +
@@ -185,6 +187,7 @@ function openDayModal(dateStr) {
           "<em>" +
           escapeHtml(record.encouragement || "") +
           "</em>" +
+          "</div>" +
           "</article>"
         );
       })
@@ -192,6 +195,59 @@ function openDayModal(dateStr) {
   }
   els.dayModal.classList.add("is-open");
   els.dayModal.setAttribute("aria-hidden", "false");
+  bindDayGestures();
+}
+
+function bindDayGestures() {
+  els.dayModalList.querySelectorAll(".day-shell").forEach(function (shell) {
+    var card = shell.querySelector(".day-record-card");
+    var deleteBtn = shell.querySelector(".delete-action");
+    var startX = 0;
+    var currentX = 0;
+    var pointerId = null;
+
+    deleteBtn.addEventListener("click", function () {
+      deleteRecord(shell.dataset.recordId);
+      var dateStr = els.dayModalTitle.textContent;
+      openDayModal(dateStr);
+      render();
+    });
+
+    card.addEventListener("pointerdown", function (event) {
+      startX = event.clientX;
+      currentX = 0;
+      pointerId = event.pointerId;
+      card.setPointerCapture(pointerId);
+      card.classList.add("is-dragging");
+    });
+
+    card.addEventListener("pointermove", function (event) {
+      if (pointerId !== event.pointerId) return;
+      currentX = Math.min(event.clientX - startX, 0);
+      card.style.transform = "translateX(" + Math.max(currentX, -96) + "px)";
+    });
+
+    card.addEventListener("pointerup", function (event) {
+      if (pointerId !== event.pointerId) return;
+      card.releasePointerCapture(pointerId);
+      if (currentX < -92) {
+        deleteRecord(shell.dataset.recordId);
+        var dateStr = els.dayModalTitle.textContent;
+        openDayModal(dateStr);
+        render();
+        return;
+      }
+      card.classList.remove("is-dragging");
+      card.style.transform = "";
+      pointerId = null;
+    });
+
+    card.addEventListener("pointercancel", function () {
+      card.classList.remove("is-dragging");
+      card.style.transform = "";
+      pointerId = null;
+    });
+  });
 }
 
 function miniDiceHtml(value) {

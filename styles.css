@@ -454,6 +454,17 @@ h2 {
   margin-top: 8px;
   color: var(--muted);
   line-height: 1.45;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.today-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  max-height: 376px;
+  overflow: auto;
+  min-width: 0;
 }
 
 .record-card small,
@@ -867,11 +878,25 @@ textarea {
   display: none;
 }
 
-.day-record-item {
+.day-record-card {
   padding: 14px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fffdf9;
+  touch-action: pan-y;
+  transition: transform 180ms ease;
+  z-index: 1;
+  position: relative;
+}
+
+.day-record-card.is-dragging {
+  transition: none;
+}
+
+.day-shell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 .day-record-head {
@@ -928,14 +953,14 @@ textarea {
   opacity: 1;
 }
 
-.day-record-item p {
+.day-record-card p {
   margin-top: 8px;
   color: var(--muted);
   line-height: 1.45;
 }
 
-.day-record-item small,
-.day-record-item em {
+.day-record-card small,
+.day-record-card em {
   display: block;
   margin-top: 8px;
   color: var(--muted);
@@ -943,12 +968,12 @@ textarea {
   line-height: 1.45;
 }
 
-.day-record-item small {
+.day-record-card small {
   color: var(--clay);
   font-weight: 800;
 }
 
-.day-record-item em {
+.day-record-card em {
   font-style: normal;
 }
 
