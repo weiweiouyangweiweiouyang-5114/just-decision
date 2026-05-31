@@ -784,6 +784,7 @@ textarea {
 }
 
 .history-card {
+  width: min(560px, 100%);
   max-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -801,6 +802,7 @@ textarea {
   gap: 10px;
   overflow: auto;
   flex: 1;
+  min-width: 0;
 }
 
 .history-empty {
@@ -855,6 +857,7 @@ textarea {
 }
 
 .day-modal-card {
+  width: min(560px, 100%);
   max-height: 70vh;
   display: flex;
   flex-direction: column;
@@ -866,6 +869,7 @@ textarea {
   gap: 10px;
   overflow: auto;
   flex: 1;
+  min-width: 0;
 }
 
 .day-modal-empty {
